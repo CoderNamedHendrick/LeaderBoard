@@ -5,9 +5,14 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SubmissionActivity extends AppCompatActivity {
 
@@ -36,5 +41,27 @@ public class SubmissionActivity extends AppCompatActivity {
         githubLink = findViewById(R.id.project_link_edt);
         submissionBtn = findViewById(R.id.submission_btn);
 
+        Button.OnClickListener submitBtnListener = (new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final SubmitProjectService service = RetrofitClientInstance.getRetrofitInstance().create(SubmitProjectService.class);
+                Call<Void> call = service.submitProject(email.getText().toString(), firstName.getText().toString(),
+                        lastName.getText().toString(), githubLink.getText().toString());
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()){
+                            Log.d("SubmissionActivity", " post submitted to form " + response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                    }
+                });
+            }
+        });
+
+        submissionBtn.setOnClickListener(submitBtnListener);
     }
 }
