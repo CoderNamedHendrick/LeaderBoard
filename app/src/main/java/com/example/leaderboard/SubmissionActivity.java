@@ -52,18 +52,22 @@ public class SubmissionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final SubmitProjectService service = RetrofitClientInstance.getRetrofitInstance().create(SubmitProjectService.class);
                 final AlertDialog.Builder builder = new AlertDialog.Builder(SubmissionActivity.this);
-                final AlertDialog alertDialog = buildSubmitDialog(builder);
+                final LayoutInflater inflater = SubmissionActivity.this.getLayoutInflater();
+                final AlertDialog alertDialog = buildSubmitDialog(builder, inflater);
                 mButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getApplicationContext(), "User clicked yes", Toast.LENGTH_SHORT).show();
+                        Log.d("Alert Dialog", " user clicked yes.");
+                        alertDialog.dismiss();
+                        buildSuccessDialog(builder, inflater);
                     }
                 });
                 mCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getApplicationContext(), "User pressed cancel", Toast.LENGTH_SHORT).show();
+                        Log.d("Alert Dialog", " user clicked cancel.");
                         alertDialog.dismiss();
+                        buildFailureDialog(builder, inflater);
                     }
                 });
                 alertDialog.show();
@@ -90,9 +94,8 @@ public class SubmissionActivity extends AppCompatActivity {
         });
     }
 
-    private AlertDialog buildSubmitDialog(AlertDialog.Builder builder) {
+    private AlertDialog buildSubmitDialog(AlertDialog.Builder builder, LayoutInflater inflater) {
         final AlertDialog dialog = (AlertDialog) builder.create();
-        LayoutInflater inflater = SubmissionActivity.this.getLayoutInflater();
 
         View dialogView = inflater.inflate(R.layout.confirm_dialog, null);
         dialog.setView(dialogView);
@@ -100,5 +103,23 @@ public class SubmissionActivity extends AppCompatActivity {
         mCancel = (ImageView) dialogView.findViewById(R.id.cancelBtn);
 
         return dialog;
+    }
+
+    private void buildSuccessDialog(AlertDialog.Builder builder, LayoutInflater inflater){
+        final AlertDialog dialog = (AlertDialog) builder.create();
+
+        View dialogView = inflater.inflate(R.layout.success_dialog, null);
+        dialog.setView(dialogView);
+
+        dialog.show();
+    }
+
+    private void buildFailureDialog(AlertDialog.Builder builder, LayoutInflater inflater){
+        final AlertDialog dialog = (AlertDialog) builder.create();
+
+        View dialogView = inflater.inflate(R.layout.failed_dialog, null);
+        dialog.setView(dialogView);
+
+        dialog.show();
     }
 }
