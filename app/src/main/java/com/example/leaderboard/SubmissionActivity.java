@@ -3,12 +3,15 @@ package com.example.leaderboard;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
-import android.text.Editable;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,6 +25,9 @@ public class SubmissionActivity extends AppCompatActivity {
     private EditText githubLink;
     private Button submissionBtn;
     Toolbar toolbar;
+    private Button mButton;
+    private ImageView mCancel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,18 +47,33 @@ public class SubmissionActivity extends AppCompatActivity {
         githubLink = findViewById(R.id.project_link_edt);
         submissionBtn = findViewById(R.id.submission_btn);
 
-        Button.OnClickListener submitBtnListener = (new View.OnClickListener() {
+        Button.OnClickListener submitBtnListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                runSubmitService();
+                final SubmitProjectService service = RetrofitClientInstance.getRetrofitInstance().create(SubmitProjectService.class);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(SubmissionActivity.this);
+                final AlertDialog alertDialog = buildSubmitDialog(builder);
+                mButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getApplicationContext(), "User clicked yes", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                mCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getApplicationContext(), "User pressed cancel", Toast.LENGTH_SHORT).show();
+                        alertDialog.dismiss();
+                    }
+                });
+                alertDialog.show();
             }
-        });
+        };
 
         submissionBtn.setOnClickListener(submitBtnListener);
     }
 
-    private void runSubmitService(){
-        final SubmitProjectService service = RetrofitClientInstance.getRetrofitInstance().create(SubmitProjectService.class);
+    private void runSubmitService(SubmitProjectService service) {
         Call<Void> call = service.submitProject(email.getText().toString(), firstName.getText().toString(),
                 lastName.getText().toString(), githubLink.getText().toString());
         call.enqueue(new Callback<Void>() {
@@ -67,5 +88,17 @@ public class SubmissionActivity extends AppCompatActivity {
             public void onFailure(Call<Void> call, Throwable t) {
             }
         });
+    }
+
+    private AlertDialog buildSubmitDialog(AlertDialog.Builder builder) {
+        final AlertDialog dialog = (AlertDialog) builder.create();
+        LayoutInflater inflater = SubmissionActivity.this.getLayoutInflater();
+
+        View dialogView = inflater.inflate(R.layout.confirm_dialog, null);
+        dialog.setView(dialogView);
+        mButton = (Button) dialogView.findViewById(R.id.yesBtn);
+        mCancel = (ImageView) dialogView.findViewById(R.id.cancelBtn);
+
+        return dialog;
     }
 }

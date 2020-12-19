@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="300dp"
+    android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardBackgroundColor="#03A9F4"
+    app:cardBackgroundColor="#FFFFFF"
     app:cardCornerRadius="12dp">
 
     <LinearLayout
@@ -20,8 +20,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingClass">
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:id="@+id/linearLayout2"
@@ -37,7 +36,7 @@
                     android:layout_weight="90" />
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/cancelBtn"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_weight="10"
@@ -49,7 +48,7 @@
                 android:id="@+id/textView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginBottom="16dp"
                 android:text="Are you sure?"
                 android:textAlignment="center"
@@ -68,13 +67,11 @@
                 app:cardCornerRadius="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/textView6"
-                app:layout_constraintHorizontal_bias="0.489"
                 app:layout_constraintStart_toStartOf="@+id/textView6"
-                app:layout_constraintTop_toBottomOf="@+id/textView6"
-                app:layout_constraintVertical_bias="0.173">
+                app:layout_constraintTop_toBottomOf="@+id/textView6">
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/yesBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
