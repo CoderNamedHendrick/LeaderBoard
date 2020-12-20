@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="300dp"
-    android:layout_margin="8dp"
+    android:layout_margin="2dp"
     app:cardBackgroundColor="#FFFFFF"
     app:cardCornerRadius="12dp">
 
@@ -35,9 +35,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_weight="10"
-                android:visibility="visible"
-                tools:srcCompat="@drawable/ic_baseline_cancel_24"
-                tools:visibility="visible" />
+                app:srcCompat="@drawable/ic_baseline_cancel_24" />
 
         </LinearLayout>
 
@@ -58,7 +56,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
             android:layout_width="wrap_content"
-            android:layout_height="56dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/textView6"
             android:layout_alignStart="@+id/textView6"
             android:layout_alignEnd="@+id/textView6"
@@ -74,10 +72,7 @@
                 android:id="@+id/yesBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="4dp"
+                android:layout_margin="2dp"
                 android:background="@drawable/round"
                 android:text="Yes" />
         </androidx.cardview.widget.CardView>

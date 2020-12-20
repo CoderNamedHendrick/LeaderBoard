@@ -27,6 +27,9 @@ public class SubmissionActivity extends AppCompatActivity {
     Toolbar toolbar;
     private Button mButton;
     private ImageView mCancel;
+    private SubmitProjectService mService;
+    private AlertDialog.Builder mBuilder;
+    private LayoutInflater mInflater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,16 +53,16 @@ public class SubmissionActivity extends AppCompatActivity {
         Button.OnClickListener submitBtnListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final SubmitProjectService service = RetrofitClientInstance.getRetrofitInstance().create(SubmitProjectService.class);
-                final AlertDialog.Builder builder = new AlertDialog.Builder(SubmissionActivity.this);
-                final LayoutInflater inflater = SubmissionActivity.this.getLayoutInflater();
-                final AlertDialog alertDialog = buildSubmitDialog(builder, inflater);
+                mService = RetrofitClientInstance.getRetrofitInstance().create(SubmitProjectService.class);
+                mBuilder = new AlertDialog.Builder(SubmissionActivity.this);
+                mInflater = SubmissionActivity.this.getLayoutInflater();
+                final AlertDialog alertDialog = buildSubmitDialog(mBuilder, mInflater);
                 mButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Log.d("Alert Dialog", " user clicked yes.");
                         alertDialog.dismiss();
-                        buildSuccessDialog(builder, inflater);
+                        runSubmitService(mService);
                     }
                 });
                 mCancel.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +70,6 @@ public class SubmissionActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         Log.d("Alert Dialog", " user clicked cancel.");
                         alertDialog.dismiss();
-                        buildFailureDialog(builder, inflater);
                     }
                 });
                 alertDialog.show();
@@ -85,11 +87,13 @@ public class SubmissionActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()){
                     Log.d("SubmissionActivity", " post submitted to form " + response.body());
+                    buildSuccessDialog(mBuilder, mInflater);
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+                buildFailureDialog(mBuilder, mInflater);
             }
         });
     }
