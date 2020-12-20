@@ -85,8 +85,8 @@ public class SubmissionActivity extends AppCompatActivity {
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
+                Log.d("SubmissionActivity", " post submitted to form " + response.body());
                 if (response.isSuccessful()){
-                    Log.d("SubmissionActivity", " post submitted to form " + response.body());
                     buildSuccessDialog(mBuilder, mInflater);
                 }
             }
