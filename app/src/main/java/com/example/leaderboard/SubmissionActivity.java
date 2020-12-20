@@ -88,6 +88,8 @@ public class SubmissionActivity extends AppCompatActivity {
                 if (response.isSuccessful()){
                     Log.d("SubmissionActivity", " post submitted to form " + response.body());
                     buildSuccessDialog(mBuilder, mInflater);
+                }else {
+                    buildFailureDialog(mBuilder, mInflater);
                 }
             }
 
